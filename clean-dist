@@ -1,0 +1,15 @@
+#!/usr/bin/sh
+
+set -e
+
+mkdir -p dist/declarations
+ls dist/src/*.d.ts | xargs -I {} mv {} dist/declarations
+cp src/types.d.ts dist/declarations
+
+cat << EOF > dist/index.d.ts
+  import Colston from "./declarations/colston";
+  export default Colston;
+  export * from "./declarations/types.d";
+EOF
+
+echo "done"
