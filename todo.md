@@ -6,5 +6,4 @@
 - [ ] allow middleware to return response and exit the application lifecycle at anytime.
 - [ ] add unit and integration tests
 - [ ] add example folder with example(s) source file
-- [ ] add benchmarks against FastAPI, Expressjs, Koajs and Oak
 - [ ] rewrite the route implementation to allow wild cards and route paths (string) pattern matching 
