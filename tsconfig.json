@@ -4,12 +4,12 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "lib": ["ESNext"],
-    "module": "ES2015",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "removeComments": false,
     "resolveJsonModule": true,
     "types": ["bun-types"],
     "outDir": "dist"
   },
-  "exclude": ["example", "dist"]
+  "include": ["index.ts", "src/**/*"]
 }
