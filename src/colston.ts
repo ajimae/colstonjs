@@ -168,7 +168,7 @@ export default class Colston implements IColston {
         request.body = readBody(request);
 
         exists = true;
-        compose(context, middleware);
+        compose(context, _middleware);
 
         return cb(context) as Response;
       }

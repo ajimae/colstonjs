@@ -23,6 +23,7 @@ Fast, lightweight and zero dependency framework for [bunjs](https://bun.sh) 🚀
     - [Route-Level Middleware](#route-level-middleware)
 - [Application instance cache](#application-instance-cache)
 - [Error Handler](#error-handler)
+- [Benchmark](#benchmark)
 - [Contribute](#contribute)
 - [License](#license)
 - [Author](#author)
@@ -314,6 +315,123 @@ app.error = async function (error) {
 
 app.start(8000);
 ```
+## Benchmark
+<details><summary>Click to expand</summary>
+
+### Benchmarking was performed using [k6](https://k6.io/open-source) load testing library.
+
+_Colstonjs_
+
+Colsonjs on `bunjs` runtime environment
+```ts
+import Colston from "colstonjs";
+
+const app = new Colston({ env: "development" });
+
+app.get("/", (ctx) => {
+  return ctx.text("OK");
+});
+
+app.start(8000)
+```
+
+```ts
+$ ./k6 run index.js
+
+          /\      |‾‾| /‾‾/   /‾‾/   
+     /\  /  \     |  |/  /   /  /    
+    /  \/    \    |     (   /   ‾‾\  
+   /          \   |  |\  \ |  (‾)  | 
+  / __________ \  |__| \__\ \_____/ .io
+
+  execution: local
+     script: index.js
+     output: -
+
+  scenarios: (100.00%) 1 scenario, 100 max VUs, 40s max duration (incl. graceful stop):
+           * default: 100 looping VUs for 10s (gracefulStop: 30s)
+
+
+running (10.0s), 000/100 VUs, 240267 complete and 0 interrupted iterations
+default ✓ [======================================] 100 VUs  10s
+
+     ✓ success
+
+     checks.........................: 100.00% ✓ 240267       ✗ 0     
+     data_received..................: 16 MB   1.6 MB/s
+     data_sent......................: 19 MB   1.9 MB/s
+     http_req_blocked...............: avg=1.42µs  min=0s       med=1µs    max=9.24ms  p(90)=1µs    p(95)=2µs   
+     http_req_connecting............: avg=192ns   min=0s       med=0s     max=2.18ms  p(90)=0s     p(95)=0s    
+     http_req_duration..............: avg=4.1ms   min=89µs     med=3.71ms max=41.18ms p(90)=5.3ms  p(95)=6.53ms
+       { expected_response:true }...: avg=4.1ms   min=89µs     med=3.71ms max=41.18ms p(90)=5.3ms  p(95)=6.53ms
+     http_req_failed................: 0.00%   ✓ 0            ✗ 240267
+     http_req_receiving.............: avg=24.17µs min=7µs      med=12µs   max=15.01ms p(90)=18µs   p(95)=21µs  
+     http_req_sending...............: avg=6.33µs  min=3µs      med=4µs    max=14.78ms p(90)=7µs    p(95)=8µs   
+     http_req_tls_handshaking.......: avg=0s      min=0s       med=0s     max=0s      p(90)=0s     p(95)=0s    
+     http_req_waiting...............: avg=4.07ms  min=75µs     med=3.69ms max=41.16ms p(90)=5.27ms p(95)=6.48ms
+     http_reqs......................: 240267  24011.563111/s
+     iteration_duration.............: avg=4.15ms  min=117.88µs med=3.74ms max=41.25ms p(90)=5.37ms p(95)=6.62ms
+     iterations.....................: 240267  24011.563111/s
+     vus............................: 100     min=100        max=100 
+     vus_max........................: 100     min=100        max=100 
+```
+*Express*
+
+Expressjs on `nodejs` runtime environment
+```ts
+const express = require("express");
+const app = express();
+
+app.get("/", (req, res) => {
+  res.send("OK");
+});
+
+app.listen(8000);
+```
+
+```ts
+$ ~/k6 run index.js
+
+          /\      |‾‾| /‾‾/   /‾‾/   
+     /\  /  \     |  |/  /   /  /    
+    /  \/    \    |     (   /   ‾‾\  
+   /          \   |  |\  \ |  (‾)  | 
+  / __________ \  |__| \__\ \_____/ .io
+
+  execution: local
+     script: index.js
+     output: -
+
+  scenarios: (100.00%) 1 scenario, 100 max VUs, 40s max duration (incl. graceful stop):
+           * default: 100 looping VUs for 10s (gracefulStop: 30s)
+
+
+running (10.0s), 000/100 VUs, 88314 complete and 0 interrupted iterations
+default ✓ [======================================] 100 VUs  10s
+
+     ✓ success
+
+     checks.........................: 100.00% ✓ 88314       ✗ 0    
+     data_received..................: 20 MB   2.0 MB/s
+     data_sent......................: 7.1 MB  705 kB/s
+     http_req_blocked...............: avg=1.54µs  min=0s     med=1µs     max=2.04ms  p(90)=1µs     p(95)=2µs    
+     http_req_connecting............: avg=451ns   min=0s     med=0s      max=1.99ms  p(90)=0s      p(95)=0s     
+     http_req_duration..............: avg=11.28ms min=1.22ms med=10.04ms max=90.96ms p(90)=15.04ms p(95)=18.71ms
+       { expected_response:true }...: avg=11.28ms min=1.22ms med=10.04ms max=90.96ms p(90)=15.04ms p(95)=18.71ms
+     http_req_failed................: 0.00%   ✓ 0           ✗ 88314
+     http_req_receiving.............: avg=18.18µs min=10µs   med=15µs    max=10.16ms p(90)=22µs    p(95)=25µs   
+     http_req_sending...............: avg=6.53µs  min=3µs    med=5µs     max=12.61ms p(90)=8µs     p(95)=9µs    
+     http_req_tls_handshaking.......: avg=0s      min=0s     med=0s      max=0s      p(90)=0s      p(95)=0s     
+     http_req_waiting...............: avg=11.25ms min=1.2ms  med=10.01ms max=90.93ms p(90)=15ms    p(95)=18.68ms
+     http_reqs......................: 88314   8818.015135/s
+     iteration_duration.............: avg=11.32ms min=1.25ms med=10.08ms max=91.01ms p(90)=15.08ms p(95)=18.76ms
+     iterations.....................: 88314   8818.015135/s
+     vus............................: 100     min=100       max=100
+     vus_max........................: 100     min=100       max=100
+```
+From the above results we can see that Colsonjs on bun handles ~ 2.72x number of requests per second when compared with Expressjs on node, benchmarking files can be found in this repository.
+</details>
+
 ## Contribute
 PRs for features, enhancements and bug fixes are welcomed. ✨ You can also look at the [todo](todo.md) file for feature contributions. 🙏🏽
 

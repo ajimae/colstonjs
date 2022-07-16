@@ -6,10 +6,17 @@ mkdir -p dist/declarations
 ls dist/src/*.d.ts | xargs -I {} mv {} dist/declarations
 cp src/types.d.ts dist/declarations
 
+# update imports in index.d.ts
 cat << EOF > dist/index.d.ts
   import Colston from "./declarations/colston";
   export default Colston;
   export * from "./declarations/types.d";
+EOF
+
+# update imports in index.js
+cat << EOF > dist/index.js
+  import Colston from "./src/colston";
+  export default Colston;
 EOF
 
 echo "done"

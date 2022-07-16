@@ -26,7 +26,7 @@ export type MethodType =
 
 export declare type Context = _Context;
 export declare type Next = () => Promise<void> | void;
-export declare type Middleware = (context: Context, next?: Next) => Response | void | Promise<Response | void>;
+export declare type Middleware = (context: Context, next: Next ) => Response | void | Promise<Response | void>;
 /**
  * @class Jade
  * @description add route to routeTable, match and process request

@@ -11,5 +11,5 @@
     "types": ["bun-types"],
     "outDir": "dist"
   },
-  "exclude": ["example"]
+  "exclude": ["example", "dist"]
 }
