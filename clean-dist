@@ -19,4 +19,4 @@ cat << EOF > dist/index.js
   export default Colston;
 EOF
 
-echo "done"
+echo "✨ Done"
