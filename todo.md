@@ -5,5 +5,5 @@
 - [x] strip out radix3 and ufo for custom router table and parser
 - [ ] allow middleware to return response and exit the application lifecycle at anytime.
 - [ ] add unit and integration tests
-- [ ] add example folder with example(s) source file
+- [x] add example folder with example(s) source file
 - [ ] rewrite the route implementation to allow wild cards and route paths (string) pattern matching 

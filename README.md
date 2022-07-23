@@ -2,7 +2,7 @@
 
 Fast, lightweight and zero dependency framework for [bunjs](https://bun.sh) 🚀
 
-![npm](https://img.shields.io/npm/v/colstonjs?color=blue&style=plastic)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/ajimae/colstonjs/publish?style=plastic) ![npm](https://img.shields.io/npm/v/colstonjs?color=blue&style=plastic)
 ![GitHub](https://img.shields.io/github/license/ajimae/colstonjs?style=plastic)
 ![npm](https://img.shields.io/npm/dt/colstonjs?style=plastic)
 
@@ -13,21 +13,26 @@ Fast, lightweight and zero dependency framework for [bunjs](https://bun.sh) 🚀
 - [Install](#installation)
 - [Usage](#usage)
   - [Examples](#examples)
-      - [Hellow Bun](#hello-bun)
+      - [Hello Bun](#hello-bun)
       - [Read request body as json or text](#read-request-body-as-json-or-text)
       - [Using named parameters](#using-named-parameters)
       - [Using query parameters](#using-query-parameters)
       - [Method Chaining](#method-chaining)
+      - [Running the demo note-app](#running-the-demo-note-app)
   - [Middleware](#middleware)
     - [Application-Level Middleware](#application-level-middleware)
     - [Route-Level Middleware](#route-level-middleware)
+    - [Context `locals`](#context-locals)
+  - [Router](#router)
+    - [Instantiating Router class](#instantiating-router-class)
+    - [Injecting Router instance into the app](#injecting-router-instance-into-the-app)
 - [Application instance cache](#application-instance-cache)
 - [Error Handler](#error-handler)
 - [Benchmark](#benchmark)
 - [Contribute](#contribute)
 - [License](#license)
 - [Author](#author)
-- [Note](#note:)
+- [DevNote](#devnote)
 
 ## Background
 
@@ -198,6 +203,17 @@ app
 app.start(8000);
 ```
 
+#### Running the demo `note-app`
+Follow the steps below to run the `demo note-taking api application` in the `examples`directory.
+- Clone this repository
+- Change directory into the note-app folder by running `cd examples/note-app`
+- Start the http server to listen on port `8000` by running `bun app.js`
+- User your favourite `http client` (e.g Postman) to make requests to the `listening http server`.
+
+<a href="https://raw.githubusercontent.com/ajimae/colstonjs/master/postman_collection.json" download>
+  <img src="postman.jpeg" width="120">
+</a>
+
 ### Middleware  
 
 Colstonjs support both `route` level middleware as well as `app` level middleware.
@@ -267,7 +283,71 @@ app.get("/", middleware-1, middleware-2, middleware-3, ..., middleware-k, (ctx: 
 });
 ...
 ```
+#### Context locals
+`ctx.locals` is a plain javascript object that is specifically added to allow sharing of data amongst the chain of middlewares and/or handler functions.
 
+```ts
+// server.ts
+...
+let requestCount = 0;
+app.post("/request-count", (ctx, next) => {
+  /**
+   * req.locals can be used to pass
+   * data from one middleware to another 
+   */
+  ctx.locals.requestCount = requestCount;
+  next();
+}, (ctx, next) => {
+  ++ctx.locals.requestCount;
+  next();
+}, (ctx) => {
+  let count = ctx.locals.requestCount;
+  return ctx.status(200).text(count); // 1
+});
+```
+
+### Router
+#### Instantiating Router class
+Router class provide a way to separate router specific declaration/blocks from the app logic, by providing that extra abstraction layer for your project.
+```typescript
+// router.ts
+import Router from "Router";
+
+// instantiate the router class
+const router1 = new Router();
+const router2 = new Router();
+
+// define user routes - can be in a separate file or module.
+router1.post('/user', (ctx) => { return ctx.status(200).json({ user }) });
+router1.get('/users', (ctx) => { return ctx.json({ users }) });
+router1.delete('/user?id', (ctx) => { return ctx.status(204).head() });
+
+// define the notes route - can also be in separate module.
+router2.get('/note/:id', (ctx) => { return ctx.json({ note }) });
+router2.get('/notes', (ctx) => { return ctx.json({ notes }) });
+router2.post('/note', (ctx) => { return ctx.status(201).json({ note }) });
+
+export { router1, router2 };
+```
+
+#### Injecting Router instance into the app
+```typescript
+// server.ts
+import Colston from "colstonjs";
+import { router1, router2 } from "./router";
+
+const app: Colston = new Colston();
+
+app.all(router1, router2);
+
+// other routes can still be defined here
+app.get("/", (ctx) => {
+  return ctx.status(200).text("Welcome to colstonjs framework for bun");
+});
+
+app.start(8000)
+```
+The `app.all()` method takes in k numbers of router instance objects e.g `app.all(router-1, router-2, ..., router-k);`. The [example](example) folder contains a full note taking backend app that utilizes this pattern.
 ## Application instance cache
 We can cache simple data which will leave throughout the application instance lifecycle.
 
@@ -445,5 +525,5 @@ See the TODO doc [here](todo.md), feel free to also add to the list by editing t
 ## Author
 Coded with 💙 by [Chukwuemeka Ajima](https://github.com/ajimae) 
 
-## Note:
+## DevNote:
 Although this version is fairly stable, it is actively still under development so also is [bunjs](https://bun.sh) and might contain some bugs, hence, not ideal for a production app.

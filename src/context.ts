@@ -22,6 +22,11 @@ export default class Context {
     return this;
   }
 
+  public setHeader(key: string, value: any) {
+    this.headers[key] = value.toString();
+    return this;
+  }
+
   /**
    * @warning method might behave unexpectedly 
    * @param raw 
