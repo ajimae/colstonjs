@@ -210,7 +210,7 @@ Follow the steps below to run the `demo note-taking api application` in the `exa
 - Start the http server to listen on port `8000` by running `bun app.js`
 - User your favourite `http client` (e.g Postman) to make requests to the `listening http server`.
 
-<a href="https://raw.githubusercontent.com/ajimae/colstonjs/master/postman_collection.json" download>
+<a href="https://github.com/ajimae/colstonjs/releases/download/v0.1.0-beta.3/postman_collection.json">
   <img src="postman.jpeg" width="120">
 </a>
 
