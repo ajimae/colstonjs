@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "target": "ES5",
     "declaration": true,
     "esModuleInterop": true,
     "isolatedModules": true,

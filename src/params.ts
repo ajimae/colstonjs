@@ -29,17 +29,12 @@ function parse(url: string): string {
     }
   }
 
-  /** 
-   * TODO:
-   * fix issue with route not matching exact value
-  */
   if (isQuery) {
     return str;
   }
 
-  // add end border to query string
   str += "$";
-  return str
+  return str;
 }
 
 export default parse;

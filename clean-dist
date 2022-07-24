@@ -11,12 +11,7 @@ cat << EOF > dist/index.d.ts
   import Colston from "./declarations/colston";
   export default Colston;
   export * from "./declarations/types.d";
-EOF
-
-# update imports in index.js
-cat << EOF > dist/index.js
-  import Colston from "./src/colston";
-  export default Colston;
+  export { default as Router } from "./src/router";
 EOF
 
 echo "✨ Done"

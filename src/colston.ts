@@ -1,11 +1,12 @@
 import { Errorlike, Serve, Server } from "bun";
-import type { Middleware, Options, IColston} from "./types.d";
+import type { Middleware, Options, IColston } from "./types.d";
 import parse from "./params";
 import queryParse from "./query";
 import readBody from "./body";
 import Context from "./context";
 import routeRegister from "./routeRegister";
 import compose from "./middlewares";
+import Router from "./router";
 
 /**
  * @class Colston
@@ -15,7 +16,7 @@ import compose from "./middlewares";
  */
 export default class Colston implements IColston {
   readonly options: Options = {};
-  readonly routeTable: object = {};
+  readonly routeTable: Array<object> = [];
   readonly middleware: Array<Function> = [];
   readonly cache = new Map<string, any>();
 
@@ -107,20 +108,29 @@ export default class Colston implements IColston {
   }
 
   /**
-   *
+   * @description HTTP DELETE method
+   * @param path 
+   * @param cb 
+   * @returns {this} 
    */
   public delete(path: string, ...cb: Array<Middleware>): Colston {
-    routeRegister(path, "DELETE", cb, this.routeTable)
+    routeRegister(path, "DELETE", cb, this.routeTable);
     return this;
   }
 
   /**
    * @description add level route 
-   * @param {string} path 
-   * @param {Function} handler 
+   * @param {Array<Function>} callbacks
    */
   public use(...cb: Array<(ctx: Context) => Response | Promise<Response> | void>): void {
     this.middleware.push(...cb);
+  }
+
+  public all(...routes: Array<Router>): Colston {
+    for (let i = 0; i < routes.length; i++)
+      this.routeTable.push(...routes[i].routeTable);
+
+    return this;
   }
 
   /**
@@ -128,36 +138,34 @@ export default class Colston implements IColston {
    * @param {Request} request bun request object
    * @returns {Response} bun response object
    */
-  // @ts-ignore
   async fetch(request: Request): Promise<Response> {
+    // https://github.com/oven-sh/bun/issues/677
+    if (!request.method) request.verb = 'DELETE';
     const context = new Context(request);
     /**
      * invoke all app level middlewares
      */
     this.middleware.forEach((cb, _) => {
-      if (typeof cb == "function") {
-        cb(context);
-      }
+      if (typeof cb == "function") cb(context);
     });
-
+    
     let exists: boolean = false;
-    let routes: Array<string> = [];
-
-    routes = Object.keys(this.routeTable);
-
-    // temporal fix for "/" path matching all routes before it.
-    const index = routes.indexOf("/");
-    if (index > -1) routes.push(routes.splice(index, 1)[0]);
-
+    let routes: Array<Array<string>> = [];
+    
+    routes = this.routeTable.map(v => Object.keys(v));
+    
+    const idx = routes.findIndex(v => v[0] == "/");
+    if (idx > -1) routes.push(routes.splice(idx, 1)[0]);
+    
     for (let i = 0; i < routes.length; i++) {
       const route = routes[i];
-      let parsedRoute = parse(route);
-
+      let parsedRoute = parse(route[0]);
+      
       if (
         new RegExp(parsedRoute).test(request.url) &&
-        this.routeTable[route][request.method.toLowerCase()]
+        this.routeTable[i][route[0]]?.[request.method.toLowerCase() || request.verb.toLowerCase()]
       ) {
-        const middleware = this.routeTable[route][request.method.toLowerCase()];
+        const middleware = this.routeTable[i][route[0]][request.method.toLowerCase() || request.verb.toLowerCase()];
         const m = request.url.match(new RegExp(parsedRoute));
 
         const _middleware = middleware.slice();

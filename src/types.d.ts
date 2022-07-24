@@ -5,6 +5,7 @@ declare global {
         query: Record<string, string>;
         params: Record<string, string>;
         body: object | string;
+        verb: string;
     }
 }
 export declare type Options = {
@@ -26,7 +27,7 @@ export type MethodType =
 
 export declare type Context = _Context;
 export declare type Next = () => Promise<void> | void;
-export declare type Middleware = (context: Context, next: Next ) => Response | void | Promise<Response | void>;
+export declare type Middleware = (context: Context, next: Next) => Response | void | Promise<Response | void>;
 /**
  * @class Jade
  * @description add route to routeTable, match and process request
@@ -38,7 +39,7 @@ export interface IColston {
     readonly routeTable: object;
     readonly middleware: Array<Function>;
     readonly cache: Map<string, any>;
-    
+
     /**
      * @description internal error handler
      * @param error
