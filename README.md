@@ -8,40 +8,46 @@ Fast, lightweight and zero dependency framework for [bunjs](https://bun.sh) 🚀
 
 ## Table of Contents
 
-- [Background](#background)
-- [Prerequisite](#prerequisite)
-- [Install](#installation)
-- [Usage](#usage)
-  - [Examples](#examples)
+- [🍥 Colston.js](#-colstonjs)
+  - [Table of Contents](#table-of-contents)
+  - [Background](#background)
+  - [Prerequisite](#prerequisite)
+  - [Installation](#installation)
+      - [_NOTE_](#note)
+  - [Usage](#usage)
+    - [_NOTE_](#note-1)
+    - [Examples](#examples)
       - [Hello Bun](#hello-bun)
-      - [Read request body as json or text](#read-request-body-as-json-or-text)
+      - [Read request body as `json` or `text`](#read-request-body-as-json-or-text)
       - [Using named parameters](#using-named-parameters)
       - [Using query parameters](#using-query-parameters)
-      - [Method Chaining](#method-chaining)
-      - [Running the demo note-app](#running-the-demo-note-app)
-  - [Middleware](#middleware)
-    - [Application-Level Middleware](#application-level-middleware)
-    - [Route-Level Middleware](#route-level-middleware)
-    - [Context `locals`](#context-locals)
-  - [Router](#router)
-    - [Instantiating Router class](#instantiating-router-class)
-    - [Injecting Router instance into the app](#injecting-router-instance-into-the-app)
-- [Application instance cache](#application-instance-cache)
-- [Error Handler](#error-handler)
-- [Benchmark](#benchmark)
-- [Contribute](#contribute)
-- [License](#license)
-- [Author](#author)
-- [DevNote](#devnote)
+      - [Method chaining](#method-chaining)
+      - [Running the demo `note-app`](#running-the-demo-note-app)
+    - [Middleware](#middleware)
+      - [Application-level middleware](#application-level-middleware)
+      - [Route-level middleware](#route-level-middleware)
+      - [Context locals](#context-locals)
+    - [Router](#router)
+      - [Instantiating Router class](#instantiating-router-class)
+      - [Injecting Router instance into the app](#injecting-router-instance-into-the-app)
+  - [Application instance cache](#application-instance-cache)
+  - [Error handler](#error-handler)
+  - [Benchmark](#benchmark)
+    - [Benchmarking was performed using k6 load testing library.](#benchmarking-was-performed-using-k6-load-testing-library)
+  - [Contribute](#contribute)
+  - [License](#license)
+  - [Todo](#todo)
+  - [Author](#author)
+  - [DevNote:](#devnote)
 
 ## Background
 
 Bun is the lastest and arguably the fastest runtime environment for javascript, similar to node and deno. Bun uses JSC (JavaScriptCore) engine unlike node and 
-deno which is the part of the reason why it's faster then node and deno.
+deno which is the part of the reason why it's faster than node and deno.
 
 Bun is written in a low-level manual memory management programming language called [ZIG](https://ziglang.org).
 
-Bun supports ~90% of the native nodejs APIs including `fs`, `path`etc and also distribute it's packages uses [npm](https://npmjs.com) hence both `yarn` and `npm` are supported in bun.
+Bun supports ~90% of the native nodejs APIs including `fs`, `path`etc and also distribute it's packages using [npm](https://npmjs.com) hence both `yarn` and `npm` are supported in bun.
 
 Colstonjs is a fast, minimal and higly configurable typescript based api `framework` highly inspired by [_Expressjs_](https://expressjs.com) and [_fastify_](https://www.fastify.io) for building high performance APIs, colstonjs is completely built on bunjs.
 
