@@ -148,19 +148,19 @@ export default class Colston implements IColston {
     this.middleware.forEach((cb, _) => {
       if (typeof cb == "function") cb(context);
     });
-    
+
     let exists: boolean = false;
     let routes: Array<Array<string>> = [];
-    
+
+    const idx = this.routeTable.findIndex(v => (Object.keys(v)[0]) == "/")
+    if (idx > -1) this.routeTable.push(this.routeTable.splice(idx, 1)[0]);
+
     routes = this.routeTable.map(v => Object.keys(v));
-    
-    const idx = routes.findIndex(v => v[0] == "/");
-    if (idx > -1) routes.push(routes.splice(idx, 1)[0]);
-    
+
     for (let i = 0; i < routes.length; i++) {
       const route = routes[i];
       let parsedRoute = parse(route[0]);
-      
+
       if (
         new RegExp(parsedRoute).test(request.url) &&
         this.routeTable[i][route[0]]?.[request.method.toLowerCase() || request.verb.toLowerCase()]
