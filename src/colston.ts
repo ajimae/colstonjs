@@ -42,7 +42,6 @@ export default class Colston implements IColston {
   }
 
   /**
-   * 
    * @param key 
    * @param value 
    */
@@ -139,8 +138,6 @@ export default class Colston implements IColston {
    * @returns {Response} bun response object
    */
   async fetch(request: Request): Promise<Response> {
-    // https://github.com/oven-sh/bun/issues/677
-    if (!request.method) request.verb = 'DELETE';
     const context = new Context(request);
     /**
      * invoke all app level middlewares
@@ -163,9 +160,9 @@ export default class Colston implements IColston {
 
       if (
         new RegExp(parsedRoute).test(request.url) &&
-        this.routeTable[i][route[0]]?.[request.method.toLowerCase() || request.verb.toLowerCase()]
+        this.routeTable[i][route[0]]?.[request.method.toLowerCase()]
       ) {
-        const middleware = this.routeTable[i][route[0]][request.method.toLowerCase() || request.verb.toLowerCase()];
+        const middleware = this.routeTable[i][route[0]][request.method.toLowerCase()];
         const m = request.url.match(new RegExp(parsedRoute));
 
         const _middleware = middleware.slice();
