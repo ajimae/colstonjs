@@ -10,7 +10,8 @@
     "removeComments": false,
     "resolveJsonModule": true,
     "types": ["bun-types"],
-    "outDir": "dist"
+    "outDir": "dist",
+    "skipLibCheck": true
   },
   "include": ["index.ts", "src/**/*"]
 }

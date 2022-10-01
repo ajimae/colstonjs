@@ -13,5 +13,4 @@ cat << EOF > dist/index.d.ts
   export * from "./declarations/types.d";
   export { default as Router } from "./src/router";
 EOF
-
-echo "✨ Done"
+# echo "✨ Done"

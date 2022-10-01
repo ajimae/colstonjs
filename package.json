@@ -1,12 +1,9 @@
 {
   "name": "colstonjs",
-  "version": "0.1.0-beta.4",
+  "version": "0.1.0-beta.5",
   "author": "Chukwuemeka Ajima <meeky.ae@gmail.com>",
   "repository": "https://github.com/ajimae/colstonjs.git",
   "main": "dist/index.js",
-  "dependencies": {
-    "bun-types": "^0.1.4"
-  },
   "description": "fast, lightweight and zero dependency framework for bunjs",
   "files": [
     "dist/*",
@@ -29,6 +26,9 @@
   ],
   "license": "MIT",
   "private": false,
+  "devDependencies": {
+    "bun-types": "^0.1.11"
+  },
   "scripts": {
     "build": "rm -rf dist && tsc",
     "postbuild": "chmod +x clean-dist && sh ./clean-dist"
