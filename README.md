@@ -47,7 +47,7 @@ deno which is the part of the reason why it's faster than node and deno.
 
 Bun is written in a low-level manual memory management programming language called [ZIG](https://ziglang.org).
 
-Bun supports ~90% of the native nodejs APIs including `fs`, `path`etc and also distribute it's packages using [npm](https://npmjs.com) hence both `yarn` and `npm` are supported in bun.
+Bun supports ~90% of the native nodejs APIs including `fs`, `path` etc. and also distribute it's packages using [npm](https://npmjs.com) hence both `yarn` and `npm` are supported in bun.
 
 Colstonjs is a fast, minimal and higly configurable typescript based api `framework` highly inspired by [_Expressjs_](https://expressjs.com) and [_fastify_](https://www.fastify.io) for building high performance APIs, colstonjs is completely built on bunjs.
 
@@ -98,16 +98,16 @@ app.get("/", function(ctx) {
 To allow the application to accept requests, we have to call the `start()` method with an optional
 port and/or callback function.
 
-This will start an `http` sever on the listening on all interfaces (`0.0.0.0`) listening on the specified port.
+This will start an `http` sever that is listening on all interfaces (`0.0.0.0`) on the specified port.
 
 ```typescript
 // server.ts
 ...
-server.start(port?, cb?);
+server.start(port?: number, cb?: Function);
 ```
 
 ### _NOTE_
-* _`port` number can be passed into the `app` through the server options or the as the first argument of the `start()` mthod. If the the port number is passed as part of the server options and also in the `start()` mthod, then port number passed into to the `start()` takes priority. If no neither is provided, then the app will default to port `3000`_
+* _`port` number can be passed into the `app` through the server options or the as the first argument of the `start()` method. If the the port number is passed as part of the server options and also in the `start()` method, then port number passed into to the `start()` takes priority. If neither is provided, then the app will default to port `3000`_
 
 * _`callback` method is immediately invoked once the connection is successfully established and the application is ready to accept requests._
 
@@ -210,7 +210,7 @@ app.start(8000);
 ```
 
 #### Running the demo `note-app`
-Follow the steps below to run the `demo note-taking api application` in the `examples`directory.
+Follow the steps below to run the `demo note-taking api application` in the `examples` directory.
 - Clone this repository
 - Change directory into the note-app folder by running `cd examples/note-app`
 - Start the http server to listen on port `8000` by running `bun app.js`
